@@ -47,8 +47,9 @@ ehthumbs.db
 Thumbs.db
 
 # NodeBuilder specific
-# Note: nodes/ and workflows/ should be included in the repository
-# as they contain the template library for others to fetch from
+# Local development directories (not included in repository)
+nodes/
+workflows/
 mcp_tools.json
 
 # Testing
