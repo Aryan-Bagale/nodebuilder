@@ -1,0 +1,44 @@
+{
+  "summarizer": {
+    "source": "github",
+    "repo": "Aryan-Bagale/nodebuilder",
+    "description": "Truncates text to 200 characters (demo summarizer)",
+    "category": "text-processing"
+  },
+  "translator": {
+    "source": "github",
+    "repo": "Aryan-Bagale/nodebuilder", 
+    "description": "Translates text to target language",
+    "category": "text-processing"
+  },
+  "sentiment-analyzer": {
+    "source": "github",
+    "repo": "Aryan-Bagale/nodebuilder",
+    "description": "Analyzes sentiment of text input",
+    "category": "text-analysis"
+  },
+  "text-classifier": {
+    "source": "github",
+    "repo": "Aryan-Bagale/nodebuilder", 
+    "description": "Classifies text into predefined categories",
+    "category": "text-analysis"
+  },
+  "image-captioner": {
+    "source": "github",
+    "repo": "Aryan-Bagale/nodebuilder",
+    "description": "Generates captions for images",
+    "category": "vision"
+  },
+  "document-parser": {
+    "source": "github", 
+    "repo": "Aryan-Bagale/nodebuilder",
+    "description": "Extracts text and metadata from documents",
+    "category": "document-processing"
+  },
+  "summarize-and-translate": {
+    "source": "github",
+    "repo": "Aryan-Bagale/nodebuilder",
+    "description": "Summarizes input text, then translates it into a target language",
+    "category": "workflows"
+  }
+}

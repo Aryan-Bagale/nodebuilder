@@ -26,20 +26,15 @@ summarizer = SummarizerNode()
 result = summarizer.run("Your text to summarize here")
 ```
 
-## Add nodes from GitHub
+## Browse Available Nodes
 
-You can also add nodes from any GitHub repository.
-
-```bash
-nodebuilder add "owner/repo node-name"
-```
-
-For example:
+See all available nodes in the registry:
 
 ```bash
-nodebuilder add "Aryan-Bagale/nodebuilder summarizer"
-nodebuilder add "langchain-ai/langgraph-nodes translator"
+nodebuilder registry
 ```
+
+This shows all nodes organized by category, all fetched from the GitHub repository.
 
 ## Compose workflows
 
@@ -70,8 +65,17 @@ tools = load_tools("mcp_tools.json")
 
 ## Available nodes
 
+Browse all available nodes with:
+
+```bash
+nodebuilder registry
+```
+
+Some examples:
 - `summarizer` - Truncates text to 200 characters (demo summarizer)
 - `translator` - Translates text to target language
+- `sentiment-analyzer` - Analyzes sentiment of text input
+- `text-classifier` - Classifies text into predefined categories
 
 ## Philosophy
 
@@ -84,8 +88,8 @@ tools = load_tools("mcp_tools.json")
 
 ### Add nodes
 ```bash
-nodebuilder add <node-name>                    # Add from bundled templates
-nodebuilder add "owner/repo node-name"         # Add from GitHub repository
+nodebuilder add <node-name>                    # Add from GitHub
+nodebuilder registry                           # Browse available nodes
 ```
 
 ### Compose workflows

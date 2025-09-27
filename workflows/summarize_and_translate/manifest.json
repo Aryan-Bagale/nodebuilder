@@ -1,0 +1,6 @@
+{
+"name": "SummarizeAndTranslateWorkflow",
+"description": "Summarizes input text, then translates it into a target language.",
+"inputs": { "text": "string", "target_lang": "string" },
+"outputs": { "translated_text": "string" }
+}

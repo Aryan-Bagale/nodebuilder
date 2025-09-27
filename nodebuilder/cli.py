@@ -15,7 +15,7 @@ Key concepts for beginners:
 from __future__ import annotations  # Allows using string annotations in older Python versions
 
 import typer  # Library for creating command-line interfaces
-from nodebuilder.core import add_node, add_workflow, list_items, fetch, compose, mcp
+from nodebuilder.core import add_node, add_workflow, list_items, fetch, compose, mcp, registry
 
 # Create the main CLI application
 app = typer.Typer(help="NodeBuilder CLI — shadcn-style node + workflow templates")
@@ -26,25 +26,37 @@ app = typer.Typer(help="NodeBuilder CLI — shadcn-style node + workflow templat
 
 @app.command("add")
 def add_command(
-    name: str = typer.Argument(..., help="Node name or 'owner/repo node-name' for GitHub"),
+    name: str = typer.Argument(..., help="Node name to add"),
 ):
     """
-    Add a node to your project.
+    Add a node to your project from GitHub.
     
     Examples:
-        nodebuilder add summarizer                    # Add from bundled templates
-        nodebuilder add "aryan/nodebuilder summarizer" # Add from GitHub repository
+        nodebuilder add summarizer                    # Add from GitHub
+        nodebuilder add sentiment-analyzer           # Add from GitHub
     """
-    # Check if it's a GitHub repo format (owner/repo node-name)
-    if "/" in name and " " in name:
-        parts = name.split()
-        if len(parts) == 2:
-            repo, node_name = parts
-            fetch.fetch_node(repo, node_name)
-            return
+    # Check if node exists in registry
+    if not registry.is_node_available(name):
+        print(f"❌ Node '{name}' not found in registry.")
+        print()
+        print("Available nodes:")
+        registry.list_available_nodes()
+        return
     
-    # Add from bundled templates
-    add_node(name)
+    # Get node info from registry
+    node_info = registry.get_node_info(name)
+    if not node_info:
+        print(f"❌ Could not get information for node '{name}'")
+        return
+    
+    # All nodes now come from GitHub (like shadcn)
+    repo = node_info.get("repo")
+    if not repo:
+        print(f"❌ GitHub repository not specified for node '{name}'")
+        return
+    
+    # Fetch from GitHub repository
+    fetch.fetch_node(repo, name)
 
 
 @app.command("compose")
@@ -82,6 +94,17 @@ def list_command():
         nodebuilder list
     """
     list_items()
+
+
+@app.command("registry")
+def registry_command():
+    """
+    List all available nodes in the registry.
+    
+    Example:
+        nodebuilder registry
+    """
+    registry.list_available_nodes()
 
 
 @app.command("export-mcp")

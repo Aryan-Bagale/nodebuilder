@@ -1,0 +1,7 @@
+
+{
+"name": "TranslatorNode",
+"description": "Dummy translator that prefixes text with target language.",
+"inputs": { "text": "string", "target_lang": "string" },
+"outputs": { "translated_text": "string" }
+}

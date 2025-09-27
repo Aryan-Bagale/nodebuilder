@@ -1,0 +1,7 @@
+
+{
+"name": "SummarizerNode",
+"description": "Truncates text to 200 characters (demo summarizer).",
+"inputs": { "text": "string" },
+"outputs": { "summary": "string" }
+}
