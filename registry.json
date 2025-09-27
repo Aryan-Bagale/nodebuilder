@@ -1,44 +1,41 @@
 {
-  "summarizer": {
-    "source": "github",
-    "repo": "Aryan-Bagale/nodebuilder",
-    "description": "Truncates text to 200 characters (demo summarizer)",
-    "category": "text-processing"
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "default",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "app/globals.css",
+    "baseColor": "slate",
+    "cssVariables": true,
+    "prefix": ""
   },
-  "translator": {
-    "source": "github",
-    "repo": "Aryan-Bagale/nodebuilder", 
-    "description": "Translates text to target language",
-    "category": "text-processing"
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils"
   },
-  "sentiment-analyzer": {
-    "source": "github",
-    "repo": "Aryan-Bagale/nodebuilder",
-    "description": "Analyzes sentiment of text input",
-    "category": "text-analysis"
-  },
-  "text-classifier": {
-    "source": "github",
-    "repo": "Aryan-Bagale/nodebuilder", 
-    "description": "Classifies text into predefined categories",
-    "category": "text-analysis"
-  },
-  "image-captioner": {
-    "source": "github",
-    "repo": "Aryan-Bagale/nodebuilder",
-    "description": "Generates captions for images",
-    "category": "vision"
-  },
-  "document-parser": {
-    "source": "github", 
-    "repo": "Aryan-Bagale/nodebuilder",
-    "description": "Extracts text and metadata from documents",
-    "category": "document-processing"
-  },
-  "summarize-and-translate": {
-    "source": "github",
-    "repo": "Aryan-Bagale/nodebuilder",
-    "description": "Summarizes input text, then translates it into a target language",
-    "category": "workflows"
-  }
+  "registry": [
+    {
+      "name": "summarizer",
+      "description": "Truncates text to 200 characters (demo summarizer)",
+      "dependencies": [],
+      "files": [
+        {
+          "name": "summarizer.py",
+          "content": "from langgraph.graph import Node\n\nclass SummarizerNode(Node):\n    \"\"\"Simple demo summarizer that truncates text to 200 characters.\"\"\"\n\n    def run(self, text: str) -> str:\n        # Replace this with a real LLM summarizer when you want\n        return text[:200]"
+        }
+      ]
+    },
+    {
+      "name": "translator",
+      "description": "Translates text to target language",
+      "dependencies": [],
+      "files": [
+        {
+          "name": "translator.py",
+          "content": "from langgraph.graph import Node\n\nclass TranslatorNode(Node):\n    \"\"\"Dummy translator that prefixes text with target language.\"\"\"\n\n    def run(self, text: str, target_lang: str = \"en\") -> str:\n        # Replace this with a real translator when you want\n        return f\"[{target_lang}] {text}\""
+        }
+      ]
+    }
+  ]
 }
