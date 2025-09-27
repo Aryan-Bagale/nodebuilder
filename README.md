@@ -37,7 +37,7 @@ nodebuilder add "owner/repo node-name"
 For example:
 
 ```bash
-nodebuilder add "aryan/nodebuilder summarizer"
+nodebuilder add "Aryan-Bagale/nodebuilder summarizer"
 nodebuilder add "langchain-ai/langgraph-nodes translator"
 ```
 
@@ -46,10 +46,27 @@ nodebuilder add "langchain-ai/langgraph-nodes translator"
 Create workflows by chaining multiple nodes together.
 
 ```bash
-nodebuilder compose my-workflow summarizer translator
+nodebuilder compose my-workflow "summarizer translator"
 ```
 
 This creates a workflow that first summarizes text, then translates it.
+
+## AI Agent Integration
+
+Export your nodes and workflows as tools for AI agents using the Model Context Protocol (MCP).
+
+```bash
+nodebuilder export-mcp
+```
+
+This creates `mcp_tools.json` with schemas that AI agents can understand and use.
+
+```python
+# AI agents can discover and use your tools
+from mcp_tools import load_tools
+tools = load_tools("mcp_tools.json")
+# Agent can now use summarizer, translator, and workflows as tools
+```
 
 ## Available nodes
 
@@ -73,8 +90,8 @@ nodebuilder add "owner/repo node-name"         # Add from GitHub repository
 
 ### Compose workflows
 ```bash
-nodebuilder compose <workflow-name> <nodes...>  # Create workflow from nodes
-nodebuilder suggest                             # Get workflow suggestions
+nodebuilder compose <workflow-name> "<nodes...>"  # Create workflow from nodes
+nodebuilder suggest                              # Get workflow suggestions
 ```
 
 ### Utilities
