@@ -131,7 +131,7 @@ def show_mcp_tools() -> None:
     tools = generate_mcp_tools()
     
     if not tools:
-        print("No tools found. Add some nodes first with 'nodebuilder node add' or 'nodebuilder node fetch'")
+        print("No tools found. Add some nodes first with 'nodebuilder add' or 'nodebuilder add \"owner/repo node-name\"'")
         return
     
     print(f"🤖 MCP Tools ({len(tools)} available):")

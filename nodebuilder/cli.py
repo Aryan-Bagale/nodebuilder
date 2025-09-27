@@ -21,118 +21,62 @@ from nodebuilder.core import add_node, add_workflow, list_items, fetch, compose,
 app = typer.Typer(help="NodeBuilder CLI — shadcn-style node + workflow templates")
 
 
-# Create sub-applications for different command categories
-node_app = typer.Typer(help="Add or manage nodes")
-workflow_app = typer.Typer(help="Add or manage workflows")
+# ================ MAIN COMMANDS ================
+# Shadcn-style simple commands
 
-# Add the sub-applications to the main app
-app.add_typer(node_app, name="node")
-app.add_typer(workflow_app, name="workflow")
-
-
-# ================ NODE COMMANDS ================
-# These commands are for working with individual nodes
-
-@node_app.command("add")
-def add_node_command(name: str):
+@app.command("add")
+def add_command(
+    name: str = typer.Argument(..., help="Node name or 'owner/repo node-name' for GitHub"),
+):
     """
-    Add a node into the current project from bundled templates.
+    Add a node to your project.
     
-    This command copies a pre-built node template from the NodeBuilder package
-    into your local project. The node will be available in the ./nodes/ directory.
-    
-    Args:
-        name: Name of the node template to add (e.g., "summarizer", "translator")
-        
-    Example:
-        nodebuilder node add summarizer
+    Examples:
+        nodebuilder add summarizer                    # Add from bundled templates
+        nodebuilder add "aryan/nodebuilder summarizer" # Add from GitHub repository
     """
+    # Check if it's a GitHub repo format (owner/repo node-name)
+    if "/" in name and " " in name:
+        parts = name.split()
+        if len(parts) == 2:
+            repo, node_name = parts
+            fetch.fetch_node(repo, node_name)
+            return
+    
+    # Add from bundled templates
     add_node(name)
 
 
-@node_app.command("fetch")
-def fetch_node_command(repo: str, node_name: str, branch: str = "main"):
-    """
-    Fetch a node from an external repository (GitHub).
-    
-    This command downloads a node from a GitHub repository and adds it to your
-    local project. It's like copying code from someone else's GitHub repo.
-    
-    Args:
-        repo: Repository URL or owner/repo format
-        node_name: Name of the node to fetch from the repository
-        branch: Git branch to fetch from (default: main)
-        
-    Examples:
-        nodebuilder node fetch owner/repo summarizer
-        nodebuilder node fetch https://github.com/owner/repo translator --branch main
-    """
-    fetch.fetch_node(repo, node_name, branch)
-
-
-# ================ WORKFLOW COMMANDS ================
-# These commands are for working with workflows (compositions of nodes)
-
-@workflow_app.command("add")
-def add_workflow_command(name: str):
-    """
-    Add a workflow into the current project from bundled templates.
-    
-    This command copies a pre-built workflow template from the NodeBuilder package
-    into your local project. The workflow will be available in the ./workflows/ directory.
-    
-    Args:
-        name: Name of the workflow template to add
-        
-    Example:
-        nodebuilder workflow add summarize_and_translate
-    """
-    add_workflow(name)
-
-
-@workflow_app.command("compose")
-def compose_workflow_command(workflow_name: str, node_names: str):
+@app.command("compose")
+def compose_command(
+    workflow_name: str = typer.Argument(..., help="Name of the workflow to create"),
+    node_names: str = typer.Argument(..., help="Space-separated list of node names"),
+):
     """
     Compose a workflow from available nodes.
     
-    This command creates a new workflow by automatically connecting existing nodes
-    in sequence. It generates Python code that chains the nodes together.
-    
-    Args:
-        workflow_name: Name for the new workflow
-        node_names: Space-separated list of node names to chain together
-        
     Example:
-        nodebuilder workflow compose my_workflow summarizer translator
+        nodebuilder compose my-workflow "summarizer translator"
     """
     nodes = node_names.split()
     compose.compose_workflow(workflow_name, nodes)
 
 
-@workflow_app.command("suggest")
-def suggest_workflows_command():
+@app.command("suggest")
+def suggest_command():
     """
-    Suggest possible workflows based on available nodes.
-    
-    This command analyzes your available nodes and suggests workflows you could create.
-    It's like having an assistant that looks at your tools and suggests how to use them together.
+    Get workflow suggestions based on available nodes.
     
     Example:
-        nodebuilder workflow suggest
+        nodebuilder suggest
     """
     compose.suggest_workflows()
 
 
-# ================ UTILITY COMMANDS ================
-# These commands help you discover and manage your nodes/workflows
-
 @app.command("list")
-def list_all():
+def list_command():
     """
-    List nodes and workflows present in the current project.
-    
-    This command shows you all the nodes and workflows you have in your project,
-    along with their descriptions. It's like a directory listing with extra info.
+    List available nodes and workflows in your project.
     
     Example:
         nodebuilder list
@@ -140,52 +84,46 @@ def list_all():
     list_items()
 
 
-# ================ AI AGENT INTEGRATION ================
-# These commands help AI agents discover and use your nodes/workflows
-
-@app.command("mcp")
-def show_mcp_tools():
-    """
-    Show MCP tool schemas for AI agent consumption.
-    
-    MCP (Model Context Protocol) is a standard for AI agents to discover and use tools.
-    This command shows how your nodes/workflows appear to AI agents.
-    
-    Example:
-        nodebuilder mcp
-    """
-    mcp.show_mcp_tools()
-
-
 @app.command("export-mcp")
-def export_mcp_tools(output_file: str = "mcp_tools.json"):
+def export_mcp_command(output_file: str = "mcp_tools.json"):
     """
-    Export MCP tool schemas to JSON file for AI agents.
+    Export MCP tool schemas for AI agents.
     
-    This command creates a JSON file that AI agents can read to understand
-    what tools (nodes/workflows) are available in your project.
-    
-    Args:
-        output_file: Name of the JSON file to create (default: mcp_tools.json)
-        
     Example:
         nodebuilder export-mcp
-        nodebuilder export-mcp my_tools.json
     """
     mcp.export_mcp_tools(output_file)
 
 
+# ================ LEGACY COMMANDS (for backward compatibility) ================
+# Keep the old commands working but mark them as legacy
+
+@app.command("node")
+def legacy_node_command():
+    """Legacy node commands. Use 'nodebuilder add' instead."""
+    print("⚠️  Legacy command. Use 'nodebuilder add <node-name>' instead.")
+    print("   Examples:")
+    print("   nodebuilder add summarizer")
+    print("   nodebuilder add owner/repo node-name")
+
+
+@app.command("workflow")
+def legacy_workflow_command():
+    """Legacy workflow commands. Use 'nodebuilder compose' instead."""
+    print("⚠️  Legacy command. Use 'nodebuilder compose <workflow-name> <nodes...>' instead.")
+    print("   Example: nodebuilder compose my-workflow summarizer translator")
+
+
+@app.command("mcp")
+def legacy_mcp_command():
+    """Legacy MCP command. Use 'nodebuilder export-mcp' instead."""
+    print("⚠️  Legacy command. Use 'nodebuilder export-mcp' instead.")
+    mcp.show_mcp_tools()
+
+
 @app.command("agent-prompt")
-def generate_agent_prompt():
-    """
-    Generate a prompt describing available tools for AI agents.
-    
-    This command creates a text description of all your nodes/workflows that
-    you can give to an AI agent to help it understand what tools are available.
-    
-    Example:
-        nodebuilder agent-prompt
-    """
+def legacy_agent_prompt_command():
+    """Legacy agent prompt command."""
     prompt = mcp.generate_agent_prompt()
     print(prompt)
 

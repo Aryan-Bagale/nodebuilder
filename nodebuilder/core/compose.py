@@ -192,7 +192,7 @@ def _generate_workflow_code(workflow_name: str, node_sequence: List[str],
 {chr(10).join(node_imports)}
 
 
-class {workflow_name}(Workflow):
+class {workflow_name.replace("-", "_")}(Workflow):
     """Generated workflow: {' → '.join(node_sequence)}"""
 
     def __init__(self):
@@ -309,12 +309,12 @@ def suggest_workflows() -> None:
     
     if len(node_names) >= 2:
         print(f"🔗 Chain workflow: {' → '.join(node_names[:2])}")
-        print(f"   nodebuilder workflow compose chain_{'_'.join(node_names[:2])} {' '.join(node_names[:2])}")
+        print(f"   nodebuilder compose chain_{'_'.join(node_names[:2])} \"{' '.join(node_names[:2])}\"")
         print()
     
     if len(node_names) >= 3:
         print(f"🔗 Full chain: {' → '.join(node_names)}")
-        print(f"   nodebuilder workflow compose full_chain {' '.join(node_names)}")
+        print(f"   nodebuilder compose full_chain \"{' '.join(node_names)}\"")
         print()
     
     # Show individual nodes
