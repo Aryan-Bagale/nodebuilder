@@ -1,0 +1,27 @@
+# ---------- file: pyproject.toml ----------
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "nodebuilder"
+version = "1.0.0"
+description = "Shadcn-style CLI to copy LangGraph nodes and workflows into your project."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "Your Name", email = "you@example.com"}]
+dependencies = ["typer>=0.9.0", "requests>=2.25.0"]
+
+
+[project.scripts]
+nodebuilder = "nodebuilder.cli:app"
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+
+[tool.setuptools]
+include-package-data = true
