@@ -1,6 +1,6 @@
 # NodeBuilder
 
-Beautifully designed, copy and paste LangGraph nodes and workflows into your project.
+Under development
 
 ## Installation
 
