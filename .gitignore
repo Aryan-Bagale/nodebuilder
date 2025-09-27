@@ -47,7 +47,9 @@ ehthumbs.db
 Thumbs.db
 
 # NodeBuilder specific
-# Local development files (not included in repository)
+# Local development directories (not included in repository)
+nodes/
+workflows/
 mcp_tools.json
 
 # Testing
