@@ -47,10 +47,9 @@ ehthumbs.db
 Thumbs.db
 
 # NodeBuilder specific
-nodes/
-workflows/
+# Note: nodes/ and workflows/ should be included in the repository
+# as they contain the template library for others to fetch from
 mcp_tools.json
-*.json
 
 # Testing
 .pytest_cache/

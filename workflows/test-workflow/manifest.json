@@ -1,0 +1,15 @@
+{
+  "name": "test-workflow",
+  "description": "Generated workflow: summarizer \u2192 translator",
+  "inputs": {
+    "text": "string"
+  },
+  "outputs": {
+    "translated_text": "string"
+  },
+  "nodes": [
+    "summarizer",
+    "translator"
+  ],
+  "generated": true
+}
